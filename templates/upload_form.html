@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+  <form id="uploadForm" class="m-5" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="greyImage" class="form-label">
+        Greyscale Image
+      </label>
+      <input type="file" id="greyImage" 
+      class="form-control" name="greyImage">
+      <div id="emailHelp" class="form-text">
+        We'll never (I hope) share your data with anyone else.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("uploadForm")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const imageInput = document.getElementById("greyImage");
+    if (imageInput.files.length === 0) {
+      alert("Please select an image.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("greyImage", imageInput.files[0]);
+
+    fetch("/upload_grey_image", {
+      method: "POST",
+      body: formData,
+      headers: {
+        // Include CSRF token for Django if needed
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) { alert(data.error); }
+        else {
+          if (data.predicted_class) {
+            alert(`My model thinks it's ${data.predicted_class}`);
+          }
+          if (data.signature_token) {
+            alert(`Your signature token: ${data.signature_token}`);
+          }
+          if (data.download_attention_token) {
+            alert(`Your token to download the attention: ${data.download_attention_token}`);
+          }
+        }
+      })
+  });
+
+  // Function to get CSRF token for Django
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+{% endblock %}
