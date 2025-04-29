@@ -17,6 +17,7 @@
 - `templates/` — html-страницы
 - `home/` и `KursMetalApp/` — папки Django проекта
 - `db.sqlite3` — база данных сайта
+- `requirements.txt` - зависимости проекта
 
  ## Быстрый старт
 
@@ -31,15 +32,16 @@
    pip install -r requirements.txt
    ```
 
-3. Инициализируйте DVC и получите данные:
+3. Запустите сайт:
    ```bash
-   dvc pull
+   python manage.pu runserver
    ```
 
-4. Запустите эксперименты в `notebooks/metals-demo.ipynb`
+## TODO выложить сайт в публичный доступ
 
+   
 ## Зависимости
-- Python 3.9+
+- Python 3.12.4+
 - остальные в requirements.txt
 
 ## Лицензия
