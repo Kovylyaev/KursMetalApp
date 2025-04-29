@@ -64,6 +64,8 @@ class Index(View):
         # Open the uploaded image with Pillow
         pil_image = Image.open(image_file).convert('RGB')
 
+        if pil_image.size[0] < 224 or pil_image.size[1] < 224:
+            return HttpResponse("Too small image")
         if pil_image.size[0] > 1000 or pil_image.size[1] > 1000:
             return HttpResponse("Too big image")
 
