@@ -5,7 +5,7 @@
     {% csrf_token %}
     <div class="mb-3">
       <label for="greyImage" class="form-label">
-        Greyscale Image
+        Select the greyscale microstructure image
       </label>
       <input type="file" id="greyImage" 
       class="form-control" name="greyImage">
@@ -43,14 +43,8 @@
       .then(data => {
         if (data.error) { alert(data.error); }
         else {
-          if (data.predicted_class) {
-            alert(`My model thinks it's ${data.predicted_class}`);
-          }
-          if (data.signature_token) {
-            alert(`Your signature token: ${data.signature_token}`);
-          }
-          if (data.download_attention_token) {
-            alert(`Your token to download the attention: ${data.download_attention_token}`);
+          if (data.predicted_Fe_concentration) {
+            alert(`My model thinks, there are ${data.predicted_Fe_concentration.toFixed(2)}% of Fe`);
           }
         }
       })
